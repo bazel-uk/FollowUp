@@ -189,7 +189,8 @@ enum Constant {
     
     // MARK: - Notifications
     enum Notification {
-        static let defaultNotificationTriggerHour: Int = 18
+        static let defaultNotificationTriggerHour: Int = 9
+        static let defaultNotificationTriggerMinute: Int = 0
     }
     
     // MARK: - Processing

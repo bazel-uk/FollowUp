@@ -37,6 +37,10 @@ protocol ContactsInteracting {
     // MARK: - Actions (Fetch)
     func fetchContacts()
     
+    /// Fetches recently added contacts.
+    /// - NOTE: This method does not account for contacts which have been added to the user's device, and have been interacted with on FollowUp, as it does not guaruntee that the `.isNew` property is accurate or reflective. Use this only to fetch recently added contacts for the purposes of generating custom notifications.
+    func fetchRecentlyAddedContacts(completion: @escaping ([any Contactable]) -> Void)
+    
     /// Updates the copy of the contact with the given ID within the Contact Store.
     func updateContactInStore(withCNContactID ID: ContactID)
     
@@ -261,7 +265,7 @@ extension ContactsInteractor {
                             
                             DispatchQueue.main.async {
                                 #if DEBUG || TESTING
-                                    print(mergedContacts)
+//                                    print(mergedContacts)
                                 #endif
                                 self._contactsPublisher.send(.overwrite(mergedContacts))
                                 self.objectWillChange.send()
@@ -271,6 +275,81 @@ extension ContactsInteractor {
                 }
             }
         }
+    }
+    
+    private func fetchContacts(completion: @escaping (Result<[any Contactable], FollowUpError>) -> Void) {
+        self.backgroundQueue.async {
+            self.fetchABContacts { abContactResult in
+                
+                switch abContactResult {
+
+                case let .failure(error):
+                    return completion(.failure(error))
+                    
+                case let .success(abContacts):
+                    self.fetchCNContacts { cnContactResult in
+                        
+                        switch cnContactResult {
+                        case let .failure(error):
+                            return completion(.failure(error))
+                        case let .success(cnContacts):
+                            let mergedContacts = self.merged(
+                                cnContacts: cnContacts.map(
+                                    Contact.init(from:)
+                                ),
+                                withABContacts: abContacts
+                            )
+                            
+                            DispatchQueue.main.async {
+                                #if DEBUG || TESTING
+                                    // print(mergedContacts)
+                                #endif
+                                completion(.success(mergedContacts))
+                                self.objectWillChange.send()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func fetchRecentlyAddedContacts(completion: @escaping ([any Contactable]) -> Void) {
+        self.backgroundQueue.async {
+            self.fetchABContacts { result in
+                switch result {
+                case let .failure(error):
+                    Log.error("Could not fetch contacts in background: \(error.localizedDescription)")
+                case let .success(contacts):
+                    let newContacts =
+                    contacts
+                        .sorted(by: { first, second in first.createDate > second.createDate })
+                        .prefix(Constant.Processing.numberOfContactsToProcessInBackground)
+                        .filter(\.isNew)
+                    DispatchQueue.main.async {
+                        completion(newContacts)
+                    }
+                }
+            }
+        }
+        
+//        self.fetchContacts { result in
+//            switch result {
+//            case let .failure(error):
+//                Log.error("Could not fetch contacts in background: \(error.localizedDescription)")
+//            case let .success(contacts):
+//                let newContacts =
+//                contacts
+//                    .sorted(by: { first, second in first.createDate > second.createDate })
+//                    .prefix(Constant.Processing.numberOfContactsToProcessInBackground)
+//                    .filter(\.isNew)
+//                
+//                // After we fetch the most recent contacts, we need to make sure that they have not been interacted with.
+//                DispatchQueue.main.async {
+//                    completion(newContacts)
+//                }
+//            }
+//        }
     }
     
     // MARK: - Private Methods
@@ -526,7 +605,7 @@ extension ContactsInteractor {
     }
     
     private func generateNameString(forFirstName firstName: String, middleName: String, lastName: String) -> String {
-        [firstName, middleName.isEmpty ? nil : middleName, lastName].compactMap { $0 }.joined(separator: " ")
+        [firstName, middleName.isEmpty ? nil : middleName, lastName].compactMap { $0 }.joined(separator: " ").trimmingWhitespace()
     }
 
     private func localized(phoneLabel: CFString?) -> String? {

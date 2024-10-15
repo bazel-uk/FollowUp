@@ -101,6 +101,7 @@
 		210DC6BF2C25B82100B20544 /* ContactsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210DC68E2C25B82100B20544 /* ContactsInteractor.swift */; };
 		216CF6262C5E18FA00F6EA9F /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 216CF6252C5E18FA00F6EA9F /* Localizable.xcstrings */; };
 		2193DA222C94454C0080C72C /* CNContact+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2193DA212C94454C0080C72C /* CNContact+Additions.swift */; };
+		219D81E02CB002F7007855E2 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219D81DF2CB002F7007855E2 /* LocationManager.swift */; };
 		21A031902C667C5700BF04D8 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 21A0318F2C667C5700BF04D8 /* InfoPlist.xcstrings */; };
 		21F690A12C8B63B9001F127B /* NativeContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F690A02C8B63B9001F127B /* NativeContactView.swift */; };
 /* End PBXBuildFile section */
@@ -215,6 +216,7 @@
 		210DC6C02C25BBFA00B20544 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		216CF6252C5E18FA00F6EA9F /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		2193DA212C94454C0080C72C /* CNContact+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CNContact+Additions.swift"; sourceTree = "<group>"; };
+		219D81DF2CB002F7007855E2 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		21A0318F2C667C5700BF04D8 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		21F690A02C8B63B9001F127B /* NativeContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeContactView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -473,6 +475,7 @@
 				210DC66F2C25B82000B20544 /* NotificationManager.swift */,
 				210DC6702C25B82000B20544 /* PhoneNumber.swift */,
 				210DC6712C25B82000B20544 /* Tag.swift */,
+				219D81DF2CB002F7007855E2 /* LocationManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -771,6 +774,7 @@
 				210DC6B82C25B82100B20544 /* Operators+Additions.swift in Sources */,
 				210DC6502C25B7F900B20544 /* NewContactsView.swift in Sources */,
 				210DC63E2C25B7F900B20544 /* IntelligentConversationStarterEditorView.swift in Sources */,
+				219D81E02CB002F7007855E2 /* LocationManager.swift in Sources */,
 				210DC6442C25B7F900B20544 /* ChipView.swift in Sources */,
 				210DC6422C25B7F900B20544 /* TagChipView.swift in Sources */,
 				210DC6B92C25B82100B20544 /* Result+Additions.swift in Sources */,
@@ -959,6 +963,10 @@
 				INFOPLIST_KEY_CFBundleDisplayName = FollowUp;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSContactsUsageDescription = "To view and organise your contacts. Contact names and notes may be used with the OpenAI API to enable intelligent conversation starters. They will not be stored anywhere. See Privacy Policy for more info.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "FollowUp checks when you've changed location to check for changes in your Contacts list and send reminders.";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "FollowUp checks when you've changed location to check for changes in your Contacts list and send reminders.";
+				INFOPLIST_KEY_NSLocationUsageDescription = "To remind you to FollowUp when you are on the move.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "FollowUp checks when you've changed location to check for changes in your Contacts list and send reminders.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -994,6 +1002,10 @@
 				INFOPLIST_KEY_CFBundleDisplayName = FollowUp;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSContactsUsageDescription = "To view and organise your contacts. Contact names and notes may be used with the OpenAI API to enable intelligent conversation starters. They will not be stored anywhere. See Privacy Policy for more info.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "FollowUp checks when you've changed location to check for changes in your Contacts list and send reminders.";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "FollowUp checks when you've changed location to check for changes in your Contacts list and send reminders.";
+				INFOPLIST_KEY_NSLocationUsageDescription = "To remind you to FollowUp when you are on the move.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "FollowUp checks when you've changed location to check for changes in your Contacts list and send reminders.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

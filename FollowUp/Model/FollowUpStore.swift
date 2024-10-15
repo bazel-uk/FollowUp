@@ -208,7 +208,8 @@ class FollowUpStore: FollowUpStoring, ObservableObject {
                     return completion(filteredContacts.count)
                 case .thatAreNew:
                     let filteredContacts = contacts
-                        .prefix(upTo: Constant.Processing.numberOfContactsToProcessInBackground)
+                        .sorted(by: \.createDate, ascending: false)
+                        .prefix(Constant.Processing.numberOfContactsToProcessInBackground)
                         .filter(\.isNew)
                     return completion(filteredContacts.count)
                 }

@@ -28,6 +28,8 @@ final class FollowUpManager: ObservableObject {
     private var subscriptions: Set<AnyCancellable> = .init()
     var notificationManager: NotificationManaging
     
+    private var locationManager: LocationManaging?
+    
     // MARK: - Initialization
     init(
         contactsInteractor: ContactsInteracting? = nil,
@@ -47,6 +49,10 @@ final class FollowUpManager: ObservableObject {
         self.notificationManager = notificationManager
         self.subscribeForNewContacts()
         self.objectWillChange.send()
+        
+        // Initialize LocationManager and start monitoring
+        self.locationManager = LocationManager(followUpManager: self)
+        self.locationManager?.startMonitoring()
     }
 
     // MARK: - Methods
@@ -126,26 +132,19 @@ final class FollowUpManager: ObservableObject {
         }
     }
     
-    // Notification Configuration
+    
+    /// Uses significant location updates to periodically check for new contacts and schedule reminders to follow up.
     func configureNotifications() {
-        BGTaskScheduler.shared.getPendingTaskRequests(completionHandler: { requests in
-            
+        
             DispatchQueue.main.async {
                 
                 if self.store.settings.followUpRemindersActive {
                     
-                    // Check if we have the right authorisation.
+                    // Check if we have the right authorisation for notifications and local updates.
                     self.notificationManager.requestNotificationAuthorization()
+                    self.locationManager?.requestAuthorisation()
                     
-                    // Check to see if any background tasks are scheduled.
-                    guard !requests.map(\.identifier).contains(Constant.Processing.followUpRemindersTaskIdentifier)
-                    else {
-                        Log.info("Background task already scheduled for follow up reminders.")
-                        return
-                    }
-                    
-                    Log.info("No background tasks found for follow up reminders. Scheduling now.")
-                    
+                                        
                     self.scheduleBackgroundTaskForConfiguringNotifications(
                         onDay: .now.setting(
                             .hour,
@@ -153,16 +152,49 @@ final class FollowUpManager: ObservableObject {
                         )?.setting(.minute, to: 0)?.setting(.second, to: 0)
                     )
                     
-                } else {
-                    // Remove all pending tasks.
-                    Log.info("Removing \(requests.count) background tasks for follow up reminders.")
-                    BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: Constant.Processing.followUpRemindersTaskIdentifier)
                 }
             }
             
-        })
         
     }
+    
+    // Legacy Notification Configuration
+//    func configureNotifications() {
+//        BGTaskScheduler.shared.getPendingTaskRequests(completionHandler: { requests in
+//            
+//            DispatchQueue.main.async {
+//                
+//                if self.store.settings.followUpRemindersActive {
+//                    
+//                    // Check if we have the right authorisation.
+//                    self.notificationManager.requestNotificationAuthorization()
+//                    
+//                    // Check to see if any background tasks are scheduled.
+//                    guard !requests.map(\.identifier).contains(Constant.Processing.followUpRemindersTaskIdentifier)
+//                    else {
+//                        Log.info("Background task already scheduled for follow up reminders.")
+//                        return
+//                    }
+//                    
+//                    Log.info("No background tasks found for follow up reminders. Scheduling now.")
+//                    
+//                    self.scheduleBackgroundTaskForConfiguringNotifications(
+//                        onDay: .now.setting(
+//                            .hour,
+//                            to: Constant.Notification.defaultNotificationTriggerHour
+//                        )?.setting(.minute, to: 0)?.setting(.second, to: 0)
+//                    )
+//                    
+//                } else {
+//                    // Remove all pending tasks.
+//                    Log.info("Removing \(requests.count) background tasks for follow up reminders.")
+//                    BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: Constant.Processing.followUpRemindersTaskIdentifier)
+//                }
+//            }
+//            
+//        })
+//        
+//    }
     
     private func scheduleBackgroundTaskForConfiguringNotifications(onDay date: Date?) {
         let date = date ?? .now
@@ -188,17 +220,36 @@ final class FollowUpManager: ObservableObject {
     }
     
     func calculateNewlyMetContactsAndScheduleFollowUpReminderNotification() {
-        self.store.numberOfContacts(.thatAreNew) { numberOfContacts in
-            guard let numberOfContacts = numberOfContacts else {
-                Log.error("Unable to determine number of contacts met within specified timeframe.")
-                return
-            }
-            Log.info("Detected \(numberOfContacts) met today. Reporting attempting to schedule notification.")
-            self.notificationManager.scheduleNotification(
-                forNumberOfAddedContacts: numberOfContacts,
-                withConfiguration: .init(trigger: .now)
-            )
-        }
+        self.contactsInteractor.fetchRecentlyAddedContacts(completion: { newContacts in
+            
+            // Before scheduling a new notification, we must clear the last one.
+            Log.info("Clearing previously scheduled notifications.")
+            self.notificationManager.clearScheduledNotifications()
+            
+            Log.info("Detected \(newContacts.count) recently added contacts. Reporting attempting to schedule notification.")
+            self.notificationManager.scheduleRecentlyAddedNamesNotification(
+                forRecentlyAddedContacts: newContacts,
+                withConfiguration:
+                        .init(
+                            trigger: .tomorrowAt(
+                                hour: Constant.Notification.defaultNotificationTriggerHour,
+                                minute: Constant.Notification.defaultNotificationTriggerMinute
+                            )
+                        )
+                )
+        })
+        
+//        self.store.numberOfContacts(.thatAreNew) { numberOfContacts in
+//            guard let numberOfContacts = numberOfContacts else {
+//                Log.error("Unable to determine number of contacts met within specified timeframe.")
+//                return
+//            }
+//            Log.info("Detected \(numberOfContacts) met today. Reporting attempting to schedule notification.")
+//            self.notificationManager.scheduleNotification(
+//                forNumberOfAddedContacts: numberOfContacts,
+//                withConfiguration: .init(trigger: .now)
+//            )
+//        }
     }
     
     /// Contains the logic associated with a request to sechedule notifications while the app is running in the background.
