@@ -29,7 +29,6 @@ class LocationManager: NSObject, LocationManaging, CLLocationManagerDelegate {
         self.followUpManager = followUpManager
         super.init()
         self.locationManager.delegate = self
-        self.locationManager.allowsBackgroundLocationUpdates = true
         self.locationManager.pausesLocationUpdatesAutomatically = false
     }
     
