@@ -99,6 +99,7 @@
 		210DC6BE2C25B82100B20544 /* View+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210DC68C2C25B82100B20544 /* View+Additions.swift */; };
 		210DC6BF2C25B82100B20544 /* ContactsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210DC68E2C25B82100B20544 /* ContactsInteractor.swift */; };
 		215219182D37CE9000AD050F /* NewFeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215219172D37CE9000AD050F /* NewFeaturesView.swift */; };
+		21553DE12DE9BFCE00B7199B /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 21553DE02DE9BFCE00B7199B /* Launch Screen.storyboard */; };
 		216CF6262C5E18FA00F6EA9F /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 216CF6252C5E18FA00F6EA9F /* Localizable.xcstrings */; };
 		2193DA222C94454C0080C72C /* CNContact+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2193DA212C94454C0080C72C /* CNContact+Additions.swift */; };
 		219D81E02CB002F7007855E2 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219D81DF2CB002F7007855E2 /* LocationManager.swift */; };
@@ -216,6 +217,7 @@
 		210DC68E2C25B82100B20544 /* ContactsInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsInteractor.swift; sourceTree = "<group>"; };
 		210DC6C02C25BBFA00B20544 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		215219172D37CE9000AD050F /* NewFeaturesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFeaturesView.swift; sourceTree = "<group>"; };
+		21553DE02DE9BFCE00B7199B /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		216CF6252C5E18FA00F6EA9F /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		2193DA212C94454C0080C72C /* CNContact+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CNContact+Additions.swift"; sourceTree = "<group>"; };
 		219D81DF2CB002F7007855E2 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
@@ -298,6 +300,7 @@
 				210DC5FA2C25B6F300B20544 /* FollowUp.entitlements */,
 				210DC5D02C25B6CE00B20544 /* FollowUpApp.swift */,
 				210DC5D42C25B6CF00B20544 /* Assets.xcassets */,
+				21553DE02DE9BFCE00B7199B /* Launch Screen.storyboard */,
 			);
 			path = FollowUp;
 			sourceTree = "<group>";
@@ -691,6 +694,7 @@
 				210DC5D82C25B6CF00B20544 /* Preview Assets.xcassets in Resources */,
 				21A031902C667C5700BF04D8 /* InfoPlist.xcstrings in Resources */,
 				216CF6262C5E18FA00F6EA9F /* Localizable.xcstrings in Resources */,
+				21553DE12DE9BFCE00B7199B /* Launch Screen.storyboard in Resources */,
 				210DC5D52C25B6CF00B20544 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -985,7 +989,7 @@
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "FollowUp checks when you've changed location to check for changes in your Contacts list and send reminders.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1025,7 +1029,7 @@
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "FollowUp checks when you've changed location to check for changes in your Contacts list and send reminders.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
